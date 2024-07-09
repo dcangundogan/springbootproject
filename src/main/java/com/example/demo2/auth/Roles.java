@@ -33,16 +33,4 @@ public class Roles {
     public void setRolename(String rolename) {
         this.rolename = rolename;
     }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
-
 }

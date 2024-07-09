@@ -51,15 +51,9 @@ public class UserController {
     public void deleteUser(@PathVariable UUID id){
         userService.deleteUser(id);
     }
-    @PostMapping("/role")
-    public Roles createRole(@RequestBody Roles role){
-        return userService.saveRole(role);
-    }
 
-    @PutMapping("/{id}/role/{rolename}")
-    public void addRoleToUser(@PathVariable UUID id, @PathVariable String rolename){
-        userService.addRoleToUser(id, rolename);
-    }
+
+
 
 
 

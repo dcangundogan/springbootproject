@@ -2,7 +2,6 @@ package com.example.demo2;
 
 import com.example.demo2.auth.RolesRepository;
 import com.example.demo2.auth.Roles;
-import com.example.demo2.auth.RolesRepository;
 import com.example.demo2.dto.UserDto;
 import com.example.demo2.logic.UserLogic;
 import com.example.demo2.mapper.UserMapper;
@@ -21,8 +20,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RolesRepository roleRepository;
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -88,23 +86,6 @@ public class UserService {
 
 
     }
-    public Roles saveRole(Roles role){
-        return roleRepository.save(role);
 
+}
 
-
-    }
-    public void addRoleToUser(UUID id,String rolename){
-        Optional<User> userOpt = userRepository.findById(id);
-        Roles role = roleRepository.findByRolename(rolename);
-
-        if (userOpt.isPresent() && role != null) {
-            User user = userOpt.get();
-            user.getRoles().add(role);
-            userRepository.save(user);
-        } else {
-            // Handle the case where user or role is not found
-            throw new RuntimeException("User or Role not found");
-        }
-
-}}
