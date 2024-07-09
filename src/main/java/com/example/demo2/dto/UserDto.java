@@ -3,6 +3,7 @@ package com.example.demo2.dto;
 import jakarta.persistence.Column;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 public class UserDto {
@@ -18,6 +19,15 @@ public class UserDto {
     private Date birth_date;
 
     private float salary;
+    private Set<String> roles ;
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
 
     public UUID getId() {
         return id;
