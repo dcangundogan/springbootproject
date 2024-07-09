@@ -1,8 +1,11 @@
 package com.example.demo2;
+import com.example.demo2.auth.Roles;
 import jakarta.persistence.*;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -27,8 +30,24 @@ public class User {
     @Column(nullable = false)
     private Date birth_date;
 
+
+
     @Column(nullable = false)
     private float salary;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> roles = new HashSet<>();
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 
     public void setId(UUID id) {
         this.id = id;
@@ -77,5 +96,6 @@ public class User {
     public float getSalary() {
         return salary;
     }
+
 }
 
