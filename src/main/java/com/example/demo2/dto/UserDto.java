@@ -7,6 +7,17 @@ import java.util.UUID;
 
 public class UserDto {
     private UUID id;
+    private String name;
+
+
+    private String surname;
+
+
+    private String identity_number;
+
+    private Date birth_date;
+
+    private float salary;
 
     public UUID getId() {
         return id;
@@ -56,15 +67,5 @@ public class UserDto {
         this.salary = salary;
     }
 
-    private String name;
 
-
-    private String surname;
-
-
-    private String identity_number;
-
-    private Date birth_date;
-
-    private float salary;
 }
