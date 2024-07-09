@@ -1,6 +1,6 @@
 package com.example.demo2.dto;
 
-import jakarta.persistence.Column;
+import com.example.demo2.entitites.Roles;
 
 import java.util.Date;
 import java.util.Set;
@@ -19,13 +19,13 @@ public class UserDto {
     private Date birth_date;
 
     private float salary;
-    private Set<String> roles ;
+    private Set<Roles> roles ;
 
-    public Set<String> getRoles() {
+    public Set<Roles> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
 

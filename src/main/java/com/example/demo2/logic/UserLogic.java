@@ -1,6 +1,5 @@
 package com.example.demo2.logic;
 
-import com.example.demo2.User;
 import com.example.demo2.dto.UserDto;
 import org.springframework.stereotype.Component;
 
