@@ -1,7 +1,5 @@
-package com.example.demo2.services;
+package com.example.demo2.auth;
 
-import com.example.demo2.repostories.RolesRepository;
-import com.example.demo2.entitites.Roles;
 import com.example.demo2.entitites.User;
 import com.example.demo2.repostories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

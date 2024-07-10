@@ -1,9 +1,9 @@
 package com.example.demo2.controllers;
 
 
-import com.example.demo2.services.RoleService;
-import com.example.demo2.repostories.RolesRepository;
-import com.example.demo2.entitites.Roles;
+import com.example.demo2.auth.RoleService;
+import com.example.demo2.auth.RolesRepository;
+import com.example.demo2.auth.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

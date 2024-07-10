@@ -1,4 +1,5 @@
 package com.example.demo2.entitites;
+import com.example.demo2.auth.Roles;
 import jakarta.persistence.*;
 
 import java.util.Date;

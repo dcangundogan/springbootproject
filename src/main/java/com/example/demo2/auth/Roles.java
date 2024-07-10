@@ -1,4 +1,4 @@
-package com.example.demo2.entitites;
+package com.example.demo2.auth;
 
 import jakarta.persistence.*;
 

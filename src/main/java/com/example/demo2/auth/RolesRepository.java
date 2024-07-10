@@ -1,6 +1,5 @@
-package com.example.demo2.repostories;
+package com.example.demo2.auth;
 
-import com.example.demo2.entitites.Roles;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 

@@ -3,7 +3,7 @@ package com.example.demo2.controllers;
 
 import com.example.demo2.repostories.UserRepository;
 import com.example.demo2.services.UserService;
-import com.example.demo2.repostories.RolesRepository;
+import com.example.demo2.auth.RolesRepository;
 import com.example.demo2.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

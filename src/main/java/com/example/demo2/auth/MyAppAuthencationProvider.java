@@ -1,4 +1,4 @@
-package com.example.demo2.configs;
+package com.example.demo2.auth;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;

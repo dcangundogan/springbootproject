@@ -1,6 +1,6 @@
 package com.example.demo2.dto;
 
-import com.example.demo2.entitites.Roles;
+import com.example.demo2.auth.Roles;
 
 import java.util.Date;
 import java.util.Set;
