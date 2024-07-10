@@ -22,6 +22,11 @@ public class User {
     @Column(nullable = false)
     private String surname;
     //can
+    @Column(nullable = true)
+    private String password;
+
+    @Column(nullable = true)
+    private String email;
 
     @Column(nullable = false)
     private String identity_number;

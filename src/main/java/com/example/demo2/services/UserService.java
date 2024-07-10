@@ -33,15 +33,9 @@ public class UserService {
         if (userLogic.validateUser(userDto)) {
             if(!userLogic.validateUserID(userDto)){
                 throw  new IllegalArgumentException("User id must be 11 characters!");
-
-
-
             }
             if(!userLogic.validateUserSalary(userDto)){
                 throw  new IllegalArgumentException("User salary must be bigger than or equal 0!!!");
-
-
-
             }
             else {
             User user = userMapper.toEntity(userDto);
