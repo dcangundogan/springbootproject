@@ -6,11 +6,13 @@ import com.example.demo2.entitites.User;
 import com.example.demo2.logic.UserLogic;
 import com.example.demo2.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserService {
@@ -26,7 +28,7 @@ public class UserService {
     @Autowired
     private UserLogic userLogic;
 
-
+    @PreAuthorize("hasAuthority('CREATE_USER')")
     public UserDto saveUser(UserDto userDto){
         if (userLogic.validateUser(userDto)) {
             if(!userLogic.validateUserID(userDto)){
@@ -49,6 +51,7 @@ public class UserService {
             throw new IllegalArgumentException("User data is not mean to be possible!!!");
         }
     }
+    @PreAuthorize("hasAuthority('READ_USER')")
     public Optional<UserDto> getUserById(UUID id) {
         return userRepository.findById(id).map(userMapper::toDTO);
     }
@@ -56,9 +59,11 @@ public class UserService {
         return userRepository.findAll().stream().map(userMapper::toDTO).collect(Collectors.toList());
 
     }
+    @PreAuthorize("hasAuthority('DELETE_USER')")
     public void deleteUser(UUID id){
          userRepository.deleteById(id);
     }
+    @PreAuthorize("hasAuthority('UPDATE_USER')")
     public UserDto updateUser(UUID id,UserDto useratt) {
         if (userLogic.validateUser(useratt) ) {
             User user = userRepository.findById(id)
@@ -87,6 +92,7 @@ public class UserService {
 
 
     }
+
 
 }
 

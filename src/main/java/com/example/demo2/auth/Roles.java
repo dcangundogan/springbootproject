@@ -1,7 +1,10 @@
 package com.example.demo2.auth;
 
+import com.example.demo2.entitites.Permissions;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +17,22 @@ public class Roles {
 
     @Column(nullable = false,unique = true)
     private String rolename;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "role_permissions",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permissions> permissions = new HashSet<>();
+    public Set<Permissions> getPermissions() {
+        return permissions;
+    }
+
+
+
+    public void setPermissions(Set<Permissions> permissions) {
+        this.permissions = permissions;
+    }
 
     public UUID getId() {
         return id;
