@@ -1,6 +1,7 @@
 package com.example.demo2.entitites;
 import com.example.demo2.auth.Roles;
 import jakarta.persistence.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name="tbl_usr")
-public class User {
+public class User  {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(nullable = false)
