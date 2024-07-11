@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-
+//main worker
 public class Demo2Application {
 
     @Bean
