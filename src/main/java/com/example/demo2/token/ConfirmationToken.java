@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     private String confirmationtoken;
 
@@ -28,9 +28,41 @@ public class ConfirmationToken {
     @JoinColumn(nullable = false,name="user_id")
     private User user;
 
-    ConfirmationToken(User user){
+    public ConfirmationToken(User user){
         this.user=user;
         this.createdDate=LocalDate.now();
         this.confirmationtoken=UUID.randomUUID().toString();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getConfirmationtoken() {
+        return confirmationtoken;
+    }
+
+    public void setConfirmationtoken(String confirmationtoken) {
+        this.confirmationtoken = confirmationtoken;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

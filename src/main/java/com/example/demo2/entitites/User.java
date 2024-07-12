@@ -1,12 +1,18 @@
 package com.example.demo2.entitites;
 import com.example.demo2.auth.Roles;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-
+@Builder
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="tbl_usr")
 public class User implements UserDetails {
@@ -32,11 +38,28 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private Date birth_date;
+    @Builder.Default
+    private Boolean locked = false;
+
+    @Builder.Default
+    private Boolean enabled = false;
 
 
 
     @Column(nullable = false)
     private float salary;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

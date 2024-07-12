@@ -1,22 +1,34 @@
 package com.example.demo2.services;
+import java.util.*;
+import javax.activation.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.naming.*;
 
+import com.example.demo2.auth.Roles;
+import com.example.demo2.auth.RolesRepository;
 import com.example.demo2.repostories.UserRepository;
 import com.example.demo2.dto.UserDto;
 import com.example.demo2.entitites.User;
 import com.example.demo2.logic.UserLogic;
 import com.example.demo2.mapper.UserMapper;
+import com.example.demo2.token.ConfirmationToken;
+import com.example.demo2.token.ConfirmationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Service
 public class UserService {
@@ -26,11 +38,17 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private UserLogic userLogic;
+    @Autowired
+    private ConfirmationTokenService confirmationTokenService;
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RolesRepository rolesRepository;
 
     @PreAuthorize("hasAuthority('CREATE_USER')")
     public UserDto saveUser(UserDto userDto){
@@ -91,6 +109,7 @@ public class UserService {
 
     }
 
+
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         //loading by user id is working right now
 
@@ -103,6 +122,67 @@ public class UserService {
             throw new UsernameNotFoundException(MessageFormat.format("User with email {0} cannot be found.", id));
         }
     }
+    public void signUpUser(User user){
+
+        final String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        final User createdUser=userRepository.save(user);
+        final ConfirmationToken confirmationToken = new ConfirmationToken(user);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+
+    }
+    public void confirmUser(ConfirmationToken confirmationToken){
+        final User user = confirmationToken.getUser();
+        user.setEnabled(true);
+        userRepository.save(user);
+        confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
+    }
+    public void saveasUser(UserDto userDto){
+        User user = new User();
+        user.setName(userDto.getName()+" " +userDto.getSurname());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Roles role = rolesRepository.findByRolename("ROLE_ADMIN");
+        if(role==null){
+            role= checkRoleExist();
+        }
+        user.setRoles((Set<Roles>) Arrays.asList(role));
+        userRepository.save(user);
+
+    }
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
+    public List<UserDto> findAllUsers() {
+        List<User> users = userRepository.();
+        return users.stream()
+                .map((user) -> mapToUserDto(user))
+                .collect(Collectors.toList());
+    }
+
+    private UserDto mapToUserDto(User user){
+        UserDto userDto = new UserDto();
+        String[] str = user.getName().split(" ");
+        userDto.setName(str[0]);
+        userDto.setSurname(str[1]);
+        userDto.setEmail(user.getEmail());
+        return userDto;
+    }
+
+
+
+
+
+
+    private Roles checkRoleExist(){
+        Roles role = new Roles();
+        role.setRolename("ROLE_ADMIN");
+        return rolesRepository.save(role);
+    }
+
 
 
 }
