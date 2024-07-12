@@ -7,7 +7,11 @@ import com.example.demo2.logic.UserLogic;
 import com.example.demo2.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,6 +89,19 @@ public class UserService {
 
 
 
+    }
+
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        //loading by user id is working right now
+
+        final Optional<User> optionalUser = userRepository.findById(UUID.fromString(id));
+
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        else {
+            throw new UsernameNotFoundException(MessageFormat.format("User with email {0} cannot be found.", id));
+        }
     }
 
 
