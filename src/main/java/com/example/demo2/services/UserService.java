@@ -178,6 +178,13 @@ public class UserService {
         userDto.setPassword(user.getPassword());
         return userDto;
     }
+    public boolean existsByID(UUID id) {
+        return userRepository.existsById(id);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
 
 

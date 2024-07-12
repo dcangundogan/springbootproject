@@ -1,62 +1,42 @@
 package com.example.demo2.controllers;
 
-import com.example.demo2.dto.UserDto;
-import com.example.demo2.entitites.User;
-import com.example.demo2.services.UserService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import com.example.demo2.services.JwtService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+@RestController
+@RequestMapping("/api/auth")
 
-@Controller
 public class AuthController {
-    UserService userService;
-    @GetMapping("/index")
 
-    public String home(){
-        return "index";
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    @GetMapping("/register")
-    public String showRegistraitonForm(Model model){
-        //create model object to form data
-        UserDto user = new UserDto();
-        model.addAttribute("user",user);
-        return "register";
-    }
-    @PostMapping("/register/save")
-    public String registration(@Validated @ModelAttribute("user") UserDto userDto,
-                               BindingResult result,
-                               Model model){
-        User existingUser = userService.findUserByEmail(userDto.getEmail());
+    @Autowired
+    private JwtService jwtService;
 
-        if(existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()){
-            result.rejectValue("email", null,
-                    "There is already an account registered with the same email");
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            final String jwt = jwtService.generateToken(authentication.getName());
+            return ResponseEntity.ok(new JwtResponse(jwt, loginRequest.getUsername()));
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Failed to login: " + ex.getMessage());
         }
-
-        if(result.hasErrors()){
-            model.addAttribute("user", userDto);
-            return "/register";
-        }
-
-        userService.saveUser(userDto);
-        return "redirect:/register?success";
-    }
-    @GetMapping("/users")
-    public String users(Model model){
-        List<UserDto> users = userService.findAllUsers();
-        model.addAttribute("users", users);
-        return "users";
-    }
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-
     }
 }
+
