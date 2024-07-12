@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registration and Login System</title>
@@ -39,67 +37,43 @@
                 </div>
             </div>
             <div class="card-body">
-                <form
-                        method="post"
-                        role="form"
-                        th:action="@{/register/save}"
-                        th:object="${user}"
-                >
+                <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
                     <div class="form-group mb-3">
                         <label class="form-label">First Name</label>
-                        <input
-                                class="form-control"
-                                id="firstName"
-                                name="firstName"
-                                placeholder="Enter first name"
-                                th:field="*{name}"
-                                type="text"
-                        />
-                        <p th:errors = "*{name}" class="text-danger"
-                           th:if="${#fields.hasErrors('firstName')}"></p>
+                        <input class="form-control" id="firstName" name="firstName" placeholder="Enter first name" th:field="*{name}" type="text" />
+                        <p th:errors="*{name}" class="text-danger" th:if="${#fields.hasErrors('firstName')}"></p>
                     </div>
 
                     <div class="form-group mb-3">
                         <label class="form-label">Last Name</label>
-                        <input
-                                class="form-control"
-                                id="lastName"
-                                name="lastName"
-                                placeholder="Enter last name"
-                                th:field="*{name}"
-                                type="text"
-                        />
-                        <p th:errors = "*{surname}" class="text-danger"
-                           th:if="${#fields.hasErrors('lastName')}"></p>
+                        <input class="form-control" id="lastName" name="lastName" placeholder="Enter last name" th:field="*{surname}" type="text" />
+                        <p th:errors="*{surname}" class="text-danger" th:if="${#fields.hasErrors('lastName')}"></p>
                     </div>
 
                     <div class="form-group mb-3">
                         <label class="form-label">Email</label>
-                        <input
-                                class="form-control"
-                                id="email"
-                                name="email"
-                                placeholder="Enter email address"
-                                th:field="*{email}"
-                                type="email"
-                        />
-                        <p th:errors = "*{email}" class="text-danger"
-                           th:if="${#fields.hasErrors('email')}"></p>
+                        <input class="form-control" id="email" name="email" placeholder="Enter email address" th:field="*{email}" type="email" />
+                        <p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Identity Number</label>
+                        <input class="form-control" id="identityNumber" name="identityNumber" placeholder="Enter identity number" th:field="*{identityNumber}" type="text" />
+                        <p th:errors="*{identityNumber}" class="text-danger" th:if="${#fields.hasErrors('identityNumber')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Birth Date</label>
+                        <input class="form-control" id="birthDate" name="birthDate" placeholder="Enter birth date" th:field="*{birthDate}" type="date" />
+                        <p th:errors="*{birthDate}" class="text-danger" th:if="${#fields.hasErrors('birthDate')}"></p>
                     </div>
 
                     <div class="form-group mb-3">
                         <label class="form-label">Password</label>
-                        <input
-                                class="form-control"
-                                id="password"
-                                name="password"
-                                placeholder="Enter password"
-                                th:field="*{password}"
-                                type="password"
-                        />
-                        <p th:errors = "*{password}" class="text-danger"
-                           th:if="${#fields.hasErrors('password')}"></p>
+                        <input class="form-control" id="password" name="password" placeholder="Enter password" th:field="*{password}" type="password" />
+                        <p th:errors="*{password}" class="text-danger" th:if="${#fields.hasErrors('password')}"></p>
                     </div>
+
                     <div class="form-group">
                         <button class="btn btn-primary" type="submit">Register</button>
                         <span>Already registered? <a th:href="@{/login}">Login here</a></span>

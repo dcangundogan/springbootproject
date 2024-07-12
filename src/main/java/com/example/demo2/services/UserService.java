@@ -38,6 +38,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -97,6 +98,10 @@ public class UserService {
             user.setBirth_date(useratt.getBirth_date());
             user.setSalary(useratt.getSalary());
             user.setRoles(user.getRoles());
+            user.setEmail(user.getEmail());
+            user.setPassword(user.getPassword());
+            user.setEnabled(user.getEnabled());
+            user.setLocked(user.getLocked());
 
             return userMapper.toDTO(user);}
 
@@ -152,12 +157,13 @@ public class UserService {
 
     }
     public User findUserByEmail(String email) {
+
         return userRepository.findByEmail(email);
     }
 
 
     public List<UserDto> findAllUsers() {
-        List<User> users = userRepository.();
+        List<User> users = userRepository.findAll();
         return users.stream()
                 .map((user) -> mapToUserDto(user))
                 .collect(Collectors.toList());
@@ -169,6 +175,7 @@ public class UserService {
         userDto.setName(str[0]);
         userDto.setSurname(str[1]);
         userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
         return userDto;
     }
 
