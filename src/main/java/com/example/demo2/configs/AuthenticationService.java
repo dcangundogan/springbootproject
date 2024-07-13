@@ -1,6 +1,7 @@
 package com.example.demo2.configs;
 
 
+import com.example.demo2.auth.Roles;
 import com.example.demo2.dto.LoginUserDto;
 import com.example.demo2.dto.RegisterUserDto;
 import com.example.demo2.entitites.User;
@@ -9,6 +10,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
@@ -36,11 +41,20 @@ public class AuthenticationService {
                 .orElseThrow();
     }
     public User signup(RegisterUserDto input) {
-        User user = new User()
-                .setName(input.getFullName())
-                .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()));
+        User user = new User();
+        user.setName(input.getName());
+        user.setSurname(input.getSurname());
+        user.setPassword(passwordEncoder.encode(input.getPassword()));
+        user.setEmail(input.getEmail());
+        user.setIdentity_number(input.getIdentityNumber());
+        user.setBirth_date(input.getBirthDate());
+        user.setSalary(input.getSalary());
+        Roles role = new Roles();
+        role.setRolename("ROLE_USER");
+        user.setRoles(Collections.singleton(role));
 
+
+        // Save the user to the repository
         return userRepository.save(user);
 
 
@@ -48,4 +62,5 @@ public class AuthenticationService {
 
 
     }
+
 }
