@@ -7,13 +7,14 @@ import com.example.demo2.dto.RegisterUserDto;
 import com.example.demo2.entitites.User;
 import com.example.demo2.repostories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Service
@@ -30,15 +31,19 @@ public class AuthenticationService {
     }
 
     public User authenticate(LoginUserDto input) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.getEmail(),
+                            input.getPassword()
+                    )
+            );
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
 
         return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + input.getEmail()));
     }
     public User signup(RegisterUserDto input) {
         User user = new User();
@@ -50,7 +55,7 @@ public class AuthenticationService {
         user.setBirth_date(input.getBirthDate());
         user.setSalary(input.getSalary());
         Roles role = new Roles();
-        role.setRolename("ROLE_USER");
+        role.setRolename("ROLE_admiun");
         user.setRoles(Collections.singleton(role));
 
 
