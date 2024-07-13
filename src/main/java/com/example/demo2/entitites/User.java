@@ -89,8 +89,9 @@ public class User implements UserDetails {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public String setSurname(String surname) {
         this.surname = surname;
+        return this.surname;
     }
 
     public String getPassword() {
