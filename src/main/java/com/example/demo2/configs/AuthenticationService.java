@@ -1,4 +1,5 @@
-package com.example.demo2.services;
+package com.example.demo2.configs;
+
 
 import com.example.demo2.dto.LoginUserDto;
 import com.example.demo2.dto.RegisterUserDto;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class AuthenticationService {
@@ -21,17 +23,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
-    public User signUp(RegisterUserDto input) {
-        User user = new User()
-                .setName(input.getName())
-                .setSurname(input.getSurname())
-                .setIdentityNumber(input.getIdentity_number())
-                .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()))
-                .setBirthDate(input.getBirth_date());
 
-        return userRepository.save(user);
-    }
     public User authenticate(LoginUserDto input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -42,5 +34,18 @@ public class AuthenticationService {
 
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
+    }
+    public User signup(RegisterUserDto input) {
+        User user = new User()
+                .setName(input.getFullName())
+                .setEmail(input.getEmail())
+                .setPassword(passwordEncoder.encode(input.getPassword()));
+
+        return userRepository.save(user);
+
+
+
+
+
     }
 }

@@ -132,12 +132,7 @@ public class UserService {
 
 
     }
-    public void confirmUser(ConfirmationToken confirmationToken){
-        final User user = confirmationToken.getUser();
-        user.setEnabled(true);
-        userRepository.save(user);
-        confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
-    }
+
     public void saveasUser(UserDto userDto){
         User user = new User();
         user.setName(userDto.getName()+" " +userDto.getSurname());
@@ -151,17 +146,17 @@ public class UserService {
         userRepository.save(user);
 
     }
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-
-    public List<UserDto> findAllUsers() {
-        List<User> users = userRepository.();
-        return users.stream()
-                .map((user) -> mapToUserDto(user))
-                .collect(Collectors.toList());
-    }
+//    public User findUserByEmail(String email) {
+//        return userRepository.findByEmail(email);
+//    }
+//
+//
+//    public List<UserDto> findAllUsers() {
+//        List<User> users = userRepository.();
+//        return users.stream()
+//                .map((user) -> mapToUserDto(user))
+//                .collect(Collectors.toList());
+//    }
 
     private UserDto mapToUserDto(User user){
         UserDto userDto = new UserDto();
