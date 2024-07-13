@@ -1,35 +1,50 @@
 package com.example.demo2.auth;
-
+import com.example.demo2.repostories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @EnableWebSecurity
 @Configuration
 public class SpringSecurityConfig {
 
-    private final MyAppAuthencationProvider authenticationProvider;
+    private final UserRepository userRepository;
 
-    public SpringSecurityConfig(MyAppAuthencationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
+    public SpringSecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Bean
-    SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.httpBasic(Customizer.withDefaults());
-        http.authenticationProvider(authenticationProvider);
-        http.authorizeHttpRequests(c -> c.anyRequest().permitAll())
-                .csrf(AbstractHttpConfigurer::disable);
-
-        return http.build();
+    UserDetailsService userDetailsService() {
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    @Bean
+    BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
 }
