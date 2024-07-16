@@ -2,31 +2,113 @@ package com.example.demo2.entitites;
 import com.example.demo2.auth.Roles;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-@Builder
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
+
+
 @Entity
 @Table(name="tbl_usr")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(nullable = false)
     private UUID id;
+
+    public String getName() {
+        return name;
+    }
+
+    public User setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public User setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public String getIdentity_number() {
+        return identity_number;
+    }
+
+    public User setIdentity_number(String identity_number) {
+        this.identity_number = identity_number;
+        return this;
+    }
+
+    public Date getBirth_date() {
+        return birth_date;
+    }
+
+    public User setBirth_date(Date birth_date) {
+        this.birth_date = birth_date;
+        return this;
+    }
+
+    public float getSalary() {
+        return salary;
+    }
+
+    public User setSalary(float salary) {
+        this.salary = salary;
+        return this;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private String surname;
-    //can
+
+    @Setter
     @Column(nullable = true)
     private String password;
 
@@ -38,28 +120,11 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private Date birth_date;
-    @Builder.Default
-    private Boolean locked = false;
-
-    @Builder.Default
-    private Boolean enabled = false;
-
 
 
     @Column(nullable = false)
     private float salary;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -69,61 +134,17 @@ public class User implements UserDetails {
     )
     private Set<Roles> roles = new HashSet<>();
 
-    public Set<Roles> getRoles() {
-        return roles;
+    public String getUsername() {
+        return email;
     }
 
-    public void setRoles(Set<Roles> roles) {
-        this.roles = roles;
+    public void setUsername(String email) {
+        this.email = email;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
-    public void setIdentity_number(String identity_number) {
-        this.identity_number = identity_number;
-    }
-
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
-    }
-
-    public void setSalary(float salary) {
-        this.salary = salary;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getIdentity_number() {
-        return identity_number;
-    }
-
-    public Date getBirth_date() {
-        return birth_date;
-    }
-
-    public float getSalary() {
-        return salary;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -132,13 +153,9 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
-    @Override
-    public String getUsername() {
-        return "";
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -159,5 +176,12 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+    @CreationTimestamp
+    @Column(updatable = false, name = "created_at")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }
 

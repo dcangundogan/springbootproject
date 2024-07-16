@@ -38,7 +38,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -98,10 +97,6 @@ public class UserService {
             user.setBirth_date(useratt.getBirth_date());
             user.setSalary(useratt.getSalary());
             user.setRoles(user.getRoles());
-            user.setEmail(user.getEmail());
-            user.setPassword(user.getPassword());
-            user.setEnabled(user.getEnabled());
-            user.setLocked(user.getLocked());
 
             return userMapper.toDTO(user);}
 
@@ -137,12 +132,7 @@ public class UserService {
 
 
     }
-    public void confirmUser(ConfirmationToken confirmationToken){
-        final User user = confirmationToken.getUser();
-        user.setEnabled(true);
-        userRepository.save(user);
-        confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
-    }
+
     public void saveasUser(UserDto userDto){
         User user = new User();
         user.setName(userDto.getName()+" " +userDto.getSurname());
@@ -156,18 +146,17 @@ public class UserService {
         userRepository.save(user);
 
     }
-    public User findUserByEmail(String email) {
-
-        return userRepository.findByEmail(email);
-    }
-
-
-    public List<UserDto> findAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map((user) -> mapToUserDto(user))
-                .collect(Collectors.toList());
-    }
+//    public User findUserByEmail(String email) {
+//        return userRepository.findByEmail(email);
+//    }
+//
+//
+//    public List<UserDto> findAllUsers() {
+//        List<User> users = userRepository.();
+//        return users.stream()
+//                .map((user) -> mapToUserDto(user))
+//                .collect(Collectors.toList());
+//    }
 
     private UserDto mapToUserDto(User user){
         UserDto userDto = new UserDto();
@@ -175,15 +164,7 @@ public class UserService {
         userDto.setName(str[0]);
         userDto.setSurname(str[1]);
         userDto.setEmail(user.getEmail());
-        userDto.setPassword(user.getPassword());
         return userDto;
-    }
-    public boolean existsByID(UUID id) {
-        return userRepository.existsById(id);
-    }
-
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
     }
 
 
