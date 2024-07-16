@@ -1,4 +1,4 @@
-package com.example.demo2.auth;
+/*package com.example.demo2.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,3 +23,4 @@ public class CorsConfig {
     }
 }
 
+*/

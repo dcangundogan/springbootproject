@@ -2,6 +2,7 @@ package com.example.demo2.configs;
 
 
 import com.example.demo2.auth.Roles;
+import com.example.demo2.auth.RolesRepository;
 import com.example.demo2.dto.LoginUserDto;
 import com.example.demo2.dto.RegisterUserDto;
 import com.example.demo2.entitites.User;
@@ -23,11 +24,13 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+    private final RolesRepository rolesRepository;
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, RolesRepository rolesRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.rolesRepository =rolesRepository;
     }
 
     public User authenticate(LoginUserDto input) {
@@ -54,9 +57,14 @@ public class AuthenticationService {
         user.setIdentity_number(input.getIdentityNumber());
         user.setBirth_date(input.getBirthDate());
         user.setSalary(input.getSalary());
-        Roles role = new Roles();
-        role.setRolename("ROLE_admiun");
+        Roles role = rolesRepository.findByRolename("ROLE_ADMIN");
+        if (role == null) {
+            throw new RuntimeException("Role not found");
+        }
+
+        // Assign the role to the user
         user.setRoles(Collections.singleton(role));
+
 
 
         // Save the user to the repository

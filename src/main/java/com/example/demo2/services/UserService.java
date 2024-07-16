@@ -146,17 +146,15 @@ public class UserService {
         userRepository.save(user);
 
     }
-//    public User findUserByEmail(String email) {
-//        return userRepository.findByEmail(email);
-//    }
-//
-//
-//    public List<UserDto> findAllUsers() {
-//        List<User> users = userRepository.();
-//        return users.stream()
-//                .map((user) -> mapToUserDto(user))
-//                .collect(Collectors.toList());
-//    }
+
+    @PreAuthorize("hasAuthority('READ_USER')")
+public List<User> allUsers() {
+    List<User> users = new ArrayList<>();
+
+    userRepository.findAll().forEach(users::add);
+
+    return users;
+}
 
     private UserDto mapToUserDto(User user){
         UserDto userDto = new UserDto();

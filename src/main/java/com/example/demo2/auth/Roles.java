@@ -2,10 +2,14 @@ package com.example.demo2.auth;
 
 import com.example.demo2.entitites.Permissions;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="roles")
@@ -48,5 +52,5 @@ public class Roles {
 
     public void setRolename(String rolename) {
         this.rolename = rolename;
-    }
-}
+
+}}

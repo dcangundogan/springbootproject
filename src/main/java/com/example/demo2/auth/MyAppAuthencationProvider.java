@@ -1,4 +1,4 @@
-package com.example.demo2.auth;
+/*package com.example.demo2.auth;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -30,3 +30,4 @@ public class MyAppAuthencationProvider implements AuthenticationProvider {
 
 
 }
+*/
