@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ_USER')")
+    @PreAuthorize("hasAuthority('READ_USERx')")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -69,7 +69,6 @@ public class UserController {
 
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('READ_USER')")
     public ResponseEntity<List<User>> allUsers() {
         List <User> users = userService.allUsers();
 

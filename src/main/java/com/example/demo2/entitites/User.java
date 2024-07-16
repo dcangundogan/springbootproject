@@ -151,7 +151,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         for (Roles role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRolename()));
+
             for (Permissions permission : role.getPermissions()) {
                 authorities.add(new SimpleGrantedAuthority(permission.getName()));
             }
