@@ -1,22 +1,98 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">Login</div>
-        <div class="card-body">
-          <form (ngSubmit)="onLogin()">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="text" class="form-control" id="email" [(ngModel)]="email" name="email" required>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-          </form>
-        </div>
-      </div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #000;
+    }
+    .container {
+      position: absolute;
+      width: 400px;
+      background: #222;
+      padding: 40px;
+      border-radius: 4px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+    }
+    .container h2 {
+      font-size: 2em;
+      color: #0f0;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .form-control {
+      background: #333;
+      border: none;
+      outline: none;
+      padding: 15px;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 500;
+    }
+    .form-label {
+      color: #aaa;
+    }
+    .btn-primary {
+      background: #0f0;
+      border: none;
+      color: #000;
+      font-weight: 600;
+      font-size: 1.35em;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+    .btn-primary:active {
+      opacity: 0.6;
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    .links a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .links a:nth-child(2) {
+      color: #0f0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Sign In</h2>
+  <form (ngSubmit)="onLogin()">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" id="email" [(ngModel)]="email" name="email" required>
     </div>
-  </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="links">
+      <a href="#">Forgot Password</a>
+      <a href="#">Signup</a>
+    </div>
+  </form>
 </div>
+</body>
+</html>
