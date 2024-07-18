@@ -57,7 +57,7 @@ public class AuthenticationService {
         user.setIdentity_number(input.getIdentity_number());
         user.setBirth_date(input.getBirth_date());
         user.setSalary(input.getSalary());
-        Roles role = rolesRepository.findByRolename("ROLE_ADMIN");
+        Roles role = rolesRepository.findByRolename("ROLE_USER");
         if (role == null) {
             throw new RuntimeException("Role not found");
         }

@@ -31,6 +31,10 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToUsers(): void {
-    this.router.navigate(['/users']);
+    if (this.authService.hasAuthority('READ_USER')) {
+      this.router.navigate(['/users']);
+    } else {
+      alert('You do not have permission to view this page.');
+    }
   }
 }

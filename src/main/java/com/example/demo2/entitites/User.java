@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -151,14 +151,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        for (Roles role : roles) {
-
-            for (Permissions permission : role.getPermissions()) {
-                authorities.add(new SimpleGrantedAuthority(permission.getName()));
-            }
-        }
-        return authorities;
+        return roles.stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .collect(Collectors.toList());
     }
 
 

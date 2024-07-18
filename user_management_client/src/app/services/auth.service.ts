@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { User } from '../model/user.model'; // Adjust the path as needed
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {RegisterUserDto} from "../model/register-user.dto";
+import {jwtDecode} from "jwt-decode";
+import { User } from '../model/user.model'; // Adjust the path as needed
+import { RegisterUserDto } from '../model/register-user.dto'; // Adjust the path as needed
 
 @Injectable({
   providedIn: 'root'
@@ -59,15 +60,21 @@ export class AuthService {
     );
   }
 
-  register(user: {
-    password: string;
-    surname: string;
-    birth_date: string;
-    name: string;
-    identity_number: string;
-    salary: number;
-    email: string
-  }): Observable<User>{
-    return this.http.post<User>(`${this.apiUrl}/signup`, user);
+  register(registerUserDto: RegisterUserDto): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/signup`, registerUserDto);
+  }
+
+  hasAuthority(authority: string): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return false;
+    }
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.authorities && decodedToken.authorities.includes(authority);
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    return !!token;
   }
 }

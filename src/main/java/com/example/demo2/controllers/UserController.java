@@ -67,7 +67,7 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
-
+    @PreAuthorize("hasAuthority('READ_USER')")
     @GetMapping("/all")
     public ResponseEntity<List<User>> allUsers() {
         List <User> users = userService.allUsers();
