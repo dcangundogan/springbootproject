@@ -24,9 +24,10 @@ export class LoginComponent {
     this.http.post<any>('http://localhost:8080/auth/login', loginData).subscribe({
       next: (response) => {
         console.log('Login successful', response);
+        console.log(loginData);
         // Assuming the response contains the token and redirect URL
         localStorage.setItem('token', response.token);
-        this.router.navigate(['/home']); // or the route you need to go
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Login failed', error);

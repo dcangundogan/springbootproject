@@ -1,34 +1,66 @@
-/* Container for the home page content */
+body {
+  font-family: 'Quicksand', sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
 .home-container {
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   padding: 20px;
+  background: #000;
+  color: #fff;
   text-align: center;
 }
 
-/* Style for the welcome message */
 .home-container h1 {
-  font-size: 2em;
+  font-size: 2.5em;
+  color: #0f0;
   margin-bottom: 20px;
 }
 
-/* Style for the paragraph */
 .home-container p {
   font-size: 1.2em;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
-/* Style for the logout button */
+.user-details {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.user-details h2 {
+  font-size: 2em;
+  color: #0f0;
+  margin-bottom: 20px;
+}
+
+.user-details p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
 .btn-logout {
-  background-color: #dc3545;
-  color: white;
-  font-size: 16px;
   padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+  background: #0f0;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .btn-logout:hover {
-  background-color: #c82333;
+  background: #0a0;
 }

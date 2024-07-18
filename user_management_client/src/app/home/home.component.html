@@ -2,5 +2,15 @@
   <h1>Welcome to the Home Page!</h1>
   <p>This is the main content area of the home page. You can customize it with additional content and features as needed.</p>
 
+  <div *ngIf="user" class="user-details">
+    <h2>User Details</h2>
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Surname:</strong> {{ user.surname }}</p>
+    <p><strong>Identity Number:</strong> {{ user.identity_number }}</p>
+    <p><strong>Birth Date:</strong> {{ user.birth_date | date }}</p>
+    <p><strong>Salary:</strong> {{ user.salary | currency }}</p>
+  </div>
+
   <button (click)="logout()" class="btn-logout">Logout</button>
 </div>
