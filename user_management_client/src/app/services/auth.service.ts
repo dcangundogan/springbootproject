@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from '../model/user.model'; // Adjust the path as needed
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import {RegisterUserDto} from "../model/register-user.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,17 @@ export class AuthService {
         this.login(response.token);
       })
     );
+  }
+
+  register(user: {
+    password: string;
+    surname: string;
+    birth_date: string;
+    name: string;
+    identity_number: string;
+    salary: number;
+    email: string
+  }): Observable<User>{
+    return this.http.post<User>(`${this.apiUrl}/signup`, user);
   }
 }

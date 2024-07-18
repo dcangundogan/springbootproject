@@ -1,5 +1,6 @@
 package com.example.demo2.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,8 +11,9 @@ public class RegisterUserDto {
     private String surname;
     private String password;
     private String email;
-    private String identityNumber;
-    private Date birthDate;
+    private String identity_number;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date birth_date;
     private float salary;
 
     public String getName() {
@@ -46,20 +48,20 @@ public class RegisterUserDto {
         this.email = email;
     }
 
-    public String getIdentityNumber() {
-        return identityNumber;
+    public String getIdentity_number() {
+        return identity_number;
     }
 
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
+    public void setIdentity_number(String identity_number) {
+        this.identity_number = identity_number;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getBirth_date() {
+        return birth_date;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirth_date(Date birth_date) {
+        this.birth_date = birth_date;
     }
 
     public float getSalary() {

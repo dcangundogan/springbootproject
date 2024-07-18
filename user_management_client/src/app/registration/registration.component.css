@@ -1,0 +1,39 @@
+.registration-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.registration-container h2 {
+  font-size: 2.5em;
+  color: #0f0;
+  margin-bottom: 20px;
+}
+
+.registration-container .form-label {
+  color: #fff;
+}
+
+.registration-container .form-control {
+  background: #222;
+  border: none;
+  color: #fff;
+}
+
+.registration-container .btn-primary {
+  background: #0f0;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.registration-container .btn-primary:hover {
+  background: #0a0;
+}

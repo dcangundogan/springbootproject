@@ -54,8 +54,8 @@ public class AuthenticationService {
         user.setSurname(input.getSurname());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setEmail(input.getEmail());
-        user.setIdentity_number(input.getIdentityNumber());
-        user.setBirth_date(input.getBirthDate());
+        user.setIdentity_number(input.getIdentity_number());
+        user.setBirth_date(input.getBirth_date());
         user.setSalary(input.getSalary());
         Roles role = rolesRepository.findByRolename("ROLE_ADMIN");
         if (role == null) {

@@ -4,6 +4,6 @@ export interface RegisterUserDto {
   email: string;
   password: string;
   identity_number: string;
-  birth_date: Date;
+  birth_date: string;
   salary: number;
 }

@@ -7,7 +7,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrls: ['./app.component.css'],
   standalone: true,
   imports: [
-    RouterOutlet  // Ensure RouterOutlet is imported to handle routing in standalone mode
+    RouterOutlet
   ]
 })
 export class AppComponent {
