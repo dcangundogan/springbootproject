@@ -1,0 +1,39 @@
+<div class="container mt-4" >
+  <div class="card">
+    <h1>Employee Registation</h1>
+    <form>
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}"  class="form-control" id="name" class="form-control" placeholder="Enter Name">
+      </div>
+      <div class="form-group">
+        <label>Surname</label>
+        <input type="text" [(ngModel)]="surname" [ngModelOptions]="{standalone: true}"  class="form-control" id="surname" class="form-control" placeholder="Enter Surname">
+      </div>
+
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" id="email"  placeholder="Enter Email">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" id="password" class="form-control" placeholder="Enter Password">
+      </div>
+      <div class="form-group">
+        <label>ID</label>
+        <input type="text" [(ngModel)]="identity_number" [ngModelOptions]="{standalone: true}"  class="form-control" id="identity_number" class="form-control" placeholder="Enter ID">
+      </div>
+      <div class="form-group">
+        <label>Birth Date</label>
+        <input type="text" [(ngModel)]="birthDate" [ngModelOptions]="{standalone: true}"  class="form-control" id="birthDate" class="form-control" placeholder="Enter Birth Date">
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="save()">Register</button>
+
+
+    </form>
+  </div>
+
+</div>

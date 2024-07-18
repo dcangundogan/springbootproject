@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +7,9 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./app.component.css'],
   standalone: true,
   imports: [
-    RouterModule,
-    CommonModule,
-    FormsModule
+    RouterOutlet  // Ensure RouterOutlet is imported to handle routing in standalone mode
   ]
 })
 export class AppComponent {
-  title = 'my-app';
+  title = 'Login Page';
 }

@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { JwtResponse } from './jwt-response';
-import { AuthLoginInfo } from './login-info';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = 'http://localhost:8080/api/auth/login';
+  constructor(private router: Router) {}
 
-  constructor(private http: HttpClient) { }
+  logout() {
+    // Clear session data
+    localStorage.removeItem('userToken');
+    // Navigate to login page
+    this.router.navigate(['/login']);
 
-  attemptAuth(credentials: AuthLoginInfo): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(this.loginUrl, credentials);
   }
 }
