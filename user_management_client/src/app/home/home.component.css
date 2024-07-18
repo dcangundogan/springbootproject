@@ -1,10 +1,3 @@
-body {
-  font-family: 'Quicksand', sans-serif;
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 0;
-}
-
 .home-container {
   display: flex;
   flex-direction: column;
@@ -23,44 +16,40 @@ body {
   margin-bottom: 20px;
 }
 
-.home-container p {
-  font-size: 1.2em;
+.home-container .user-details {
+  text-align: left;
   margin-bottom: 20px;
 }
 
-.user-details {
-  background: #222;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 500px;
-}
-
-.user-details h2 {
-  font-size: 2em;
-  color: #0f0;
-  margin-bottom: 20px;
-}
-
-.user-details p {
-  font-size: 1.2em;
+.home-container .user-details p {
   margin: 5px 0;
 }
 
-.btn-logout {
-  padding: 10px 20px;
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #000;
+.home-container .btn-primary {
   background: #0f0;
   border: none;
-  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s;
+  margin-right: 10px;
 }
 
-.btn-logout:hover {
+.home-container .btn-primary:hover {
   background: #0a0;
+}
+
+.home-container .btn-secondary {
+  background: #00f;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.home-container .btn-secondary:hover {
+  background: #005;
+}
+
+.mt-3 {
+  margin-top: 1rem;
 }

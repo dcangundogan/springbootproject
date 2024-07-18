@@ -62,7 +62,7 @@ public class AuthenticationService {
             throw new RuntimeException("Role not found");
         }
 
-        // Assign the role to the user
+
         user.setRoles(Collections.singleton(role));
 
 

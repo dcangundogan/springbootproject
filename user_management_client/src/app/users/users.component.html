@@ -1,0 +1,25 @@
+<div class="users-container">
+  <h2>All Users</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Surname</th>
+      <th>Email</th>
+      <th>Identity Number</th>
+      <th>Birth Date</th>
+      <th>Salary</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.name }}</td>
+      <td>{{ user.surname }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.identity_number }}</td>
+      <td>{{ user.birth_date | date }}</td>
+      <td>{{ user.salary | currency }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
