@@ -1,73 +1,79 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { UserService } from '../services/user.service'; // Adjust the path as needed
-import { User } from '../model/user.model';
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import { Component, ViewChild } from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {
-  MatCell,
-  MatCellDef,
+  MatCell, MatCellDef,
   MatColumnDef,
   MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable
-} from "@angular/material/table"; // Adjust the path as needed
+  MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatTable,
+  MatTableDataSource
+} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { UserService } from '../services/user.service';
+import { User } from '../model/user.model';
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
+import {CurrencyPipe, DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
   imports: [
-    DatePipe,
-    CurrencyPipe,
+    MatFormField,
+    MatInput,
+    ReactiveFormsModule,
+    MatButton,
     MatTable,
     MatColumnDef,
     MatHeaderCell,
-    MatHeaderCellDef,
     MatCell,
+    MatHeaderCellDef,
     MatCellDef,
+    DatePipe,
     MatHeaderRow,
-    MatHeaderRowDef,
     MatRowDef,
+    MatHeaderRowDef,
+    CurrencyPipe,
+    MatPaginator,
     MatRow,
-    MatPaginator
+    MatLabel
   ],
   standalone: true
 })
-export class UsersComponent implements OnInit {
-  users: User[] = [];
-  totalUsers: number = 0;
-  pageSize: number = 10;
-  currentPage: number = 0;
-
+export class UsersComponent {
   displayedColumns: string[] = ['name', 'surname', 'email', 'identityNumber', 'birthDate', 'salary'];
+  dataSource = new MatTableDataSource<User>();
+  searchControl = new FormControl('');
+  totalUsers = 0;
+  pageSize = 10;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private userService: UserService) {}
-
-  ngOnInit(): void {
-    this.loadUsers();
+  constructor(private userService: UserService) {
+    this.searchControl.valueChanges.subscribe(value => {
+      // @ts-ignore
+      this.applyFilter(value);
+    });
   }
 
-  loadUsers(): void {
-    this.userService.getUsers(this.currentPage, this.pageSize).subscribe(
-      data => {
-        console.log('Data received from API:', data); // Logging to check data
-        this.users = data.users;
-        this.totalUsers = data.total;
-        console.log('Users loaded: ', this.users); // Logging to check data
-        console.log('Total users count: ', this.totalUsers); // Logging to check data
-      },
-      error => {
-        console.error('Error fetching users', error);
-      }
-    );
+  loadUsers() {
+    this.userService.getUsers(0, this.pageSize).subscribe(response => {
+      this.dataSource.data = response.users;
+      this.totalUsers = response.total;
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
-  onPageChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.loadUsers();
+  applyFilter(value: string) {
+    this.dataSource.filter = value.trim().toLowerCase();
+  }
+
+  onPageChange(event: any) {
+    this.userService.getUsers(event.pageIndex, event.pageSize).subscribe(response => {
+      this.dataSource.data = response.users;
+      this.totalUsers = response.total;
+    });
   }
 }

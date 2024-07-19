@@ -12,7 +12,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(page: number, size: number): Observable<{ users: User[], total: number }> {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') ?? ''; // Use nullish coalescing operator to provide a fallback empty string
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<{ users: User[], total: number }>(`${this.apiUrl}?page=${page}&size=${size}`, { headers });
   }

@@ -9,14 +9,15 @@ import {Component,Input,Output,EventEmitter} from "@angular/core";
   standalone:true
 })
 export class PaginationComponent{
-  @Input() currentPage:number;
-  @Input() itemsPerPage:number;
-  @Input() totalItems:number;
+  @Input() currentPage: number | undefined;
+  @Input() itemsPerPage: number | undefined;
+  @Input() totalItems: number | undefined;
   @Input() pageChanged:EventEmitter<number>= new EventEmitter<number>();
 
 
 
   get totalPages(): number {
+    //@ts-ignores
     return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 

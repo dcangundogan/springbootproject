@@ -1,7 +1,11 @@
 <div class="users-container">
   <h2>All Users</h2>
-  <table mat-table [dataSource]="users" class="mat-elevation-z8">
-
+  <mat-form-field appearance="outline">
+    <mat-label>Search</mat-label>
+    <input matInput [formControl]="searchControl" placeholder="Search users">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="loadUsers()">Load Users</button>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let user"> {{user.name}} </td>
@@ -19,12 +23,12 @@
 
     <ng-container matColumnDef="identityNumber">
       <th mat-header-cell *matHeaderCellDef> Identity Number </th>
-      <td mat-cell *matCellDef="let user"> {{user.identity_number}} </td>
+      <td mat-cell *matCellDef="let user"> {{user.identityNumber}} </td>
     </ng-container>
 
     <ng-container matColumnDef="birthDate">
       <th mat-header-cell *matHeaderCellDef> Birth Date </th>
-      <td mat-cell *matCellDef="let user"> {{user.birth_date | date}} </td>
+      <td mat-cell *matCellDef="let user"> {{user.birthDate | date}} </td>
     </ng-container>
 
     <ng-container matColumnDef="salary">
