@@ -7,6 +7,8 @@ import com.example.demo2.services.UserService;
 import com.example.demo2.auth.RolesRepository;
 import com.example.demo2.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -14,9 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.awt.print.Pageable;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,10 +36,26 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping
-    @PreAuthorize("hasAuthority('READ_USERx')")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('READ_USER')")
+    public ResponseEntity<Map<String, Object>> getUsersWithPagination(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageRequest paging = PageRequest.of(page, size);
+        Page<User> pageUsers = userRepository.findAll(paging);
+        List<User> users = pageUsers.getContent();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", users);
+        response.put("total", pageUsers.getTotalElements());
+        response.put("currentPage", pageUsers.getNumber());
+        response.put("totalPages", pageUsers.getTotalPages());
+
+        System.out.println("Fetched Users: " + users);
+        System.out.println("Total Users: " + pageUsers.getTotalElements());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
@@ -68,7 +85,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('READ_USER')")
-    @GetMapping("/all")
+    @GetMapping("/hepsi")
     public ResponseEntity<List<User>> allUsers() {
         List <User> users = userService.allUsers();
 

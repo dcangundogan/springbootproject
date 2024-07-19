@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -77,4 +77,5 @@ export class AuthService {
     const token = localStorage.getItem('token');
     return !!token;
   }
+
 }

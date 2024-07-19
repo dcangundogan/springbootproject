@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model'; // Adjust the path as needed
 
@@ -7,13 +7,13 @@ import { User } from '../model/user.model'; // Adjust the path as needed
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/users/all'; // Your backend API URL
+  private apiUrl = 'http://localhost:8080/api/users/all'; //backend url
 
   constructor(private http: HttpClient) {}
 
-  getAllUsers(): Observable<User[]> {
+  getUsers(page: number, size: number): Observable<{ users: User[], total: number }> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User[]>(this.apiUrl, { headers });
+    return this.http.get<{ users: User[], total: number }>(`${this.apiUrl}?page=${page}&size=${size}`, { headers });
   }
 }

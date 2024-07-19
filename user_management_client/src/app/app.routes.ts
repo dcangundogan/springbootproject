@@ -5,7 +5,8 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {LandingComponent} from "./landing/landing.component";
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth.guard";
-//import {UserDetailsComponent} from "./userDetails/user-details/user-details.component";
+import {MatPaginatorModule} from "@angular/material/paginator";
+
 
 export const routes: Routes = [
   { path: '', component:LandingComponent },
