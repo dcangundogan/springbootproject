@@ -120,7 +120,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String identity_number;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
 
     private Date birth_date;
 

@@ -2,23 +2,26 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
 
 import { AppComponent } from './app.component';
-import { UsersComponent } from './users/users.component';
+import { HomeComponent } from './home/home.component'; // Adjust the path as needed
+import { LoginComponent } from './login/login.component'; // Adjust the path as needed
+import { RegistrationComponent } from './registration/registration.component'; // Adjust the path as needed
+import { UsersComponent } from './users/users.component'; // Adjust the path as needed
+
+import { AuthService } from './services/auth.service'; // Adjust the path as needed
+import { UserService } from './services/user.service'; // Adjust the path as needed
+
+
 
 @NgModule({
   declarations: [
+
 
   ],
   imports: [
@@ -26,18 +29,16 @@ import { UsersComponent } from './users/users.component';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule,
-    MatIconModule,
     MatButtonModule,
-    MatCardModule,
-    MatListModule
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    RegistrationComponent,
+    UsersComponent
   ],
-  providers: [],
+  providers: [AuthService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

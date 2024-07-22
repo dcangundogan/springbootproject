@@ -9,4 +9,5 @@ export interface User {
   roles: string[];
   createdAt: Date;
   updatedAt: Date;
+  [key: string]: any; // This line adds an index signature
 }
