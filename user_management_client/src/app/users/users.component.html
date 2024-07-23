@@ -1,5 +1,6 @@
 <div class="container">
   <h1>User Management</h1>
+  <button mat-raised-button color="primary" (click)="navigateToRoles()">Manage Roles</button>
   <mat-card class="mat-elevation-z8">
     <mat-card-content>
       <table mat-table [dataSource]="users" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z8" multiTemplateDataRows>

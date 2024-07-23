@@ -3,6 +3,7 @@ package com.example.demo2.auth;
 import com.example.demo2.entitites.User;
 import com.example.demo2.repostories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class RoleService {
 
 
     }
+
     public void addRoleToUser(UUID id, String rolename){
         Optional<User> userOpt = userRepository.findById(id);
         Roles role = roleRepository.findByRolename(rolename);

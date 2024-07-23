@@ -24,7 +24,7 @@ public class RoleController {
     public Roles createRole(@RequestBody Roles role){
         return roleService.saveRole(role);
     }
-    @GetMapping
+    @GetMapping("/all")
     public List<Roles> getAllRoles(){
         return roleService.getallRoles();
 
