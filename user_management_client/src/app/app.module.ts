@@ -15,7 +15,8 @@ import { RegistrationComponent } from './registration/registration.component'; /
 import { UsersComponent } from './users/users.component'; // Adjust the path as needed
 
 import { AuthService } from './services/auth.service'; // Adjust the path as needed
-import { UserService } from './services/user.service'; // Adjust the path as needed
+import { UserService } from './services/user.service';
+import {MatSortModule} from "@angular/material/sort"; // Adjust the path as needed
 
 
 
@@ -36,7 +37,8 @@ import { UserService } from './services/user.service'; // Adjust the path as nee
     HomeComponent,
     LoginComponent,
     RegistrationComponent,
-    UsersComponent
+    UsersComponent,
+    MatSortModule
   ],
   providers: [AuthService, UserService],
   bootstrap: [AppComponent]

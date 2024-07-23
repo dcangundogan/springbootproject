@@ -5,6 +5,7 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {LandingComponent} from "./landing/landing.component";
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth.guard";
+import {RolesComponent} from "./roles/roles.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
 
 
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {path : 'home',component :HomeComponent},
   {path:'register',component :RegistrationComponent},
-  {path:'users',component:UsersComponent,canActivate:[AuthGuard]}
+  {path:'users',component:UsersComponent,canActivate:[AuthGuard]},
+  {path:'roles',component:RolesComponent}
 
 ];

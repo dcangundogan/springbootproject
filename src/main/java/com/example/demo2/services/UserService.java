@@ -138,7 +138,7 @@ public class UserService {
         userRepository.save(user);
     }
     @PreAuthorize("hasAuthority('READ_USER')")
-    public Page<User> findAllUsersWithFilters(Pageable pageable, String name, String surname, String email, String identity_number, Date birth_date, Float salary) {
+    public Page<User> findAllUsersWithFilters(Pageable pageable, String name, String surname, String email, String identity_number, Date birth_date, Float salary, String sortBy, String sortDirection) {
         Locale turkishLocale = new Locale("tr", "TR");
 
         logger.info("Filtering users with: name={}, surname={}, email={}, identity_number={}, birth_date={}, salary={}",
@@ -170,8 +170,16 @@ public class UserService {
 
         cq.where(predicates.toArray(new Predicate[0]));
 
+        if (sortDirection != null && sortBy != null) {
+            if (sortDirection.equalsIgnoreCase("asc")) {
+                cq.orderBy(cb.asc(cb.lower(user.get(sortBy))));
+            } else if (sortDirection.equalsIgnoreCase("desc")) {
+                cq.orderBy(cb.desc(cb.lower(user.get(sortBy))));
+            }
+        }
+
         TypedQuery<User> typedQuery = entityManager.createQuery(cq.select(user));
-        int totalRows = typedQuery.getResultList().size(); // This fetches all to count total, which might be inefficient for large tables
+        int totalRows = typedQuery.getResultList().size();
         typedQuery.setFirstResult((int) pageable.getOffset());
         typedQuery.setMaxResults(pageable.getPageSize());
 

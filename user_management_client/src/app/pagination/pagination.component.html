@@ -1,5 +1,5 @@
 <div class="pagination">
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
-  <span>Page {{ currentPage }} of {{ totalPages }}</span>
-  <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+  <span>Page {{currentPage + 1}} of {{totalPages}}</span>
+  <button (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Next</button>
 </div>

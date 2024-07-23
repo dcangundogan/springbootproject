@@ -11,7 +11,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(page: number, size: number, searchTerms: any): Observable<{ content: User[], totalElements: number }> {
+  getUsers(
+    page: number,
+    size: number,
+    searchTerms: any,
+    sortBy: string,
+    sortDirection: string
+  ): Observable<{ content: User[], totalElements: number }> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
@@ -21,6 +27,14 @@ export class UserService {
       if (searchTerms[key]) {
         params = params.set(key, searchTerms[key]);
       }
+    }
+
+    // Add sorting parameters
+    if (sortBy) {
+      params = params.set('sortBy', sortBy);
+    }
+    if (sortDirection) {
+      params = params.set('sortDirection', sortDirection);
     }
 
     return this.http.get<{ content: User[], totalElements: number }>(this.apiUrl, { headers, params });

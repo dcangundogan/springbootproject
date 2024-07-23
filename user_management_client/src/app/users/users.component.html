@@ -2,10 +2,10 @@
   <h1>User Management</h1>
   <mat-card class="mat-elevation-z8">
     <mat-card-content>
-      <table mat-table [dataSource]="users" class="mat-elevation-z8" multiTemplateDataRows>
+      <table mat-table [dataSource]="users" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z8" multiTemplateDataRows>
 
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
               <mat-label>Name</mat-label>
               <input matInput [(ngModel)]="searchTerms.name" (ngModelChange)="onSearchChange()">
@@ -15,7 +15,7 @@
         </ng-container>
 
         <ng-container matColumnDef="surname">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
               <mat-label>Surname</mat-label>
               <input matInput [(ngModel)]="searchTerms.surname" (ngModelChange)="onSearchChange()">
@@ -25,7 +25,7 @@
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
               <mat-label>Email</mat-label>
               <input matInput [(ngModel)]="searchTerms.email" (ngModelChange)="onSearchChange()">
@@ -35,7 +35,7 @@
         </ng-container>
 
         <ng-container matColumnDef="identityNumber">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
               <mat-label>Identity Number</mat-label>
               <input matInput [(ngModel)]="searchTerms.identity_number" (ngModelChange)="onSearchChange()">
@@ -45,7 +45,7 @@
         </ng-container>
 
         <ng-container matColumnDef="birthDate">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
               <mat-label>Birth Date</mat-label>
               <input matInput [(ngModel)]="searchTerms.birth_date" (ngModelChange)="onSearchChange()">
@@ -55,7 +55,7 @@
         </ng-container>
 
         <ng-container matColumnDef="salary">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
               <mat-label>Salary</mat-label>
               <input matInput [(ngModel)]="searchTerms.salary" (ngModelChange)="onSearchChange()">
