@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                         })
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/signup","/auth/login").permitAll() // Allow access to /auth/signup and /auth/login without authentication
+                        .requestMatchers("/auth/signup","/auth/login","/api/** ").permitAll() // Allow access to /auth/signup and /auth/login without authentication
                         .anyRequest().authenticated() // Require authentication for any other request
                 )
                 .sessionManagement(session -> session
