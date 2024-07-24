@@ -40,4 +40,10 @@ export class RoleService {
   getPermissionsForRole(roleId: string): Observable<Permission[]> {
     return this.http.get<Permission[]>(`${this.permUrl}/role/${roleId}`, { headers: this.getHeaders() });
   }
+  removePermissionFromRole(roleId: string, permissionId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${roleId}/permissions/${permissionId}`, { headers: this.getHeaders() });
+  }
+  getAllPermissions(): Observable<Permission[]> {
+    return this.http.get<Permission[]>(this.permUrl, { headers: this.getHeaders() });
+  }
 }
