@@ -4,6 +4,8 @@ import com.example.demo2.entitites.Permissions;
 import com.example.demo2.repostories.PermissionsRepository;
 import com.example.demo2.services.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,23 +19,25 @@ public class PermissionController {
     @Autowired
     PermissionsRepository permissionsRepository;
     @Autowired
-    PermissionService permissionService;
+    PermissionService permissionsService;
 
 
     @PostMapping
     public Permissions createPermission(@RequestBody Permissions permissions){
-        return permissionService.savePermission(permissions);
+        return permissionsService.savePermission(permissions);
 
     }
     @GetMapping
     public List<Permissions> getAllPermissions(){
-        return permissionService.getAllPermission();
+        return permissionsService.getAllPermission();
     }
     @PutMapping("/{id}/perm/{name}")
 
     public void addPermissionToRole(@PathVariable UUID id,@PathVariable String name){
-        permissionService.addPermissionToRole(id,name);
+        permissionsService.addPermissionToRole(id,name);
 
     }
+
+
 
 }

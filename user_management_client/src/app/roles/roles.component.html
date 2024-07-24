@@ -1,12 +1,8 @@
-<div class="role-list-container">
-  <h2>Role Management</h2>
-
-  <!-- Button to open dialog for adding a new role -->
-  <button mat-raised-button color="primary" (click)="addRole()">Add Role</button>
-
-  <!-- Table to display roles -->
-  <table class="role-table">
-    <thead>
+<div class="container">
+  <h1>Role Management</h1>
+  <button class="btn btn-primary" (click)="addRole()">Add Role</button>
+  <table class="table table-striped mt-3">
+    <thead class="thead-dark">
     <tr>
       <th>Role Name</th>
       <th>Actions</th>
@@ -16,10 +12,13 @@
     <tr *ngFor="let role of roles">
       <td>{{ role.rolename }}</td>
       <td>
-        <button mat-button (click)="deleteRole(role.id)">Delete</button>
-        <button mat-button (click)="navigateToPermissions(role.id)">Permissions</button>
+        <button class="btn btn-info" (click)="openPermissionsDialog(role)">Permissions</button>
+        <button class="btn btn-danger" (click)="deleteRole(role.id)">Delete</button>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
+
+<!-- Include the Permissions Dialog Component -->
+<app-permissions-dialog [permissions]="selectedPermissions"></app-permissions-dialog>

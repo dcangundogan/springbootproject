@@ -1,31 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { RoleService } from '../services/role.service';
 import { Role } from '../model/roles.model';
-import { RoleDialogComponent } from "./role-dialog.component";
-import { MatButton, MatButtonModule } from "@angular/material/button";
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {PermissionsDialogComponent} from "../permissions-dialog/permissions-dialog.component";
+import {NgForOf} from "@angular/common";
+
+declare var $: any; // Declare jQuery
 
 @Component({
   selector: 'app-role-management',
   templateUrl: './roles.component.html',
   standalone: true,
   imports: [
-    CommonModule, // Import CommonModule for *ngFor
-    MatButton,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
+    PermissionsDialogComponent,
+    NgForOf
   ],
   styleUrls: ['./roles.component.css']
 })
 export class RolesComponent implements OnInit {
   roles: Role[] = [];
-  displayedColumns: string[] = ['roleName', 'actions'];
+  selectedPermissions: any[] = []; // To store the permissions of the selected role
 
-  constructor(private roleService: RoleService, public dialog: MatDialog, private router: Router) {}
+  constructor(private roleService: RoleService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadRoles();
@@ -44,24 +40,15 @@ export class RolesComponent implements OnInit {
   }
 
   addRole(): void {
-    const dialogRef = this.dialog.open(RoleDialogComponent, {
-      width: '250px',
-      data: { rolename: '' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const newRole: Role = { id: '', rolename: result.rolename, permissions: [] };
-        this.roleService.createRole(newRole).subscribe(
-          data => {
-            this.loadRoles();
-          },
-          error => {
-            console.error('Error creating role', error);
-          }
-        );
+    const newRole: Role = { id: '', rolename: 'New Role', permissions: [] };
+    this.roleService.createRole(newRole).subscribe(
+      data => {
+        this.loadRoles();
+      },
+      error => {
+        console.error('Error creating role', error);
       }
-    });
+    );
   }
 
   deleteRole(id: string): void {
@@ -75,7 +62,31 @@ export class RolesComponent implements OnInit {
     );
   }
 
-  navigateToPermissions(roleId: string): void {
-    this.router.navigate(['/permissions', roleId]);
+  openPermissionsDialog(role: Role): void {
+    console.log('Opening permissions dialog for role:', role);
+    this.selectedPermissions = role.permissions;
+    console.log('Selected permissions:', this.selectedPermissions);
+
+    const modal = document.getElementById('permissionsModal');
+    if (modal) {
+      const modalBackdrop = document.createElement('div');
+      modalBackdrop.className = 'modal-backdrop fade show';
+      document.body.appendChild(modalBackdrop);
+      modal.style.display = 'block';
+      modal.classList.add('show');
+      document.body.classList.add('modal-open');
+    }
+  }
+
+  closeModal(): void {
+    const modal = document.getElementById('permissionsModal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      const modalBackdrop = document.getElementsByClassName('modal-backdrop')[0];
+      if (modalBackdrop) {
+        document.body.removeChild(modalBackdrop);
+      }
+    }
   }
 }

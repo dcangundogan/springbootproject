@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Role } from '../model/roles.model';
+import {Permission} from "../model/permission.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
-  private apiUrl = 'http://localhost:8080/api/roles/all'; // backend URL
+  private apiUrl = 'http://localhost:8080/api/roles/all';
+  private permUrl='http://localhost:8080/api/perms';// backend URL
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +19,7 @@ export class RoleService {
   }
 
   getRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(this.apiUrl, { headers: this.getHeaders() });
+    return this.http.get<Role[]>(`${this.apiUrl}  `, { headers: this.getHeaders() });
   }
 
   getRoleById(id: string): Observable<Role> {
@@ -33,6 +35,9 @@ export class RoleService {
   }
 
   addPermissionToRole(roleId: string, permissionId: string): Observable<Role> {
-    return this.http.put<Role>(`${this.apiUrl}/${roleId}/permissions/${permissionId}`, {}, { headers: this.getHeaders() });
+    return this.http.put<Role>(`${this.permUrl}/${roleId}/permissions/${permissionId}`, {}, { headers: this.getHeaders() });
+  }
+  getPermissionsForRole(roleId: string): Observable<Permission[]> {
+    return this.http.get<Permission[]>(`${this.permUrl}/role/${roleId}`, { headers: this.getHeaders() });
   }
 }

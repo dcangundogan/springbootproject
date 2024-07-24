@@ -19,7 +19,8 @@ import { UsersComponent } from './users/users.component'; // Adjust the path as 
 
 import { AuthService } from './services/auth.service'; // Adjust the path as needed
 import { UserService } from './services/user.service';
-import {MatSortModule} from "@angular/material/sort"; // Adjust the path as needed
+import {MatSortModule} from "@angular/material/sort";
+import {PermissionsDialogComponent} from "./permissions-dialog/permissions-dialog.component"; // Adjust the path as needed
 
 
 
@@ -43,7 +44,8 @@ import {MatSortModule} from "@angular/material/sort"; // Adjust the path as need
     UsersComponent,
     MatSortModule,
     RolesComponent,
-    RoleDialogComponent
+    RoleDialogComponent,
+    PermissionsDialogComponent
 
   ],
   providers: [AuthService, UserService],
