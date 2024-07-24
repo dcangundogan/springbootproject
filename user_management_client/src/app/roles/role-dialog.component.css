@@ -2,18 +2,31 @@ h1 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
+  color: #333; /* Ensure the text is visible */
 }
 
 mat-form-field {
   width: 100%;
   margin-bottom: 20px;
+  display: block; /* Ensure the form field occupies full width */
 }
 
 .mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
+  padding: 10px; /* Add padding to the dialog actions area */
 }
 
 button {
   margin-left: 10px;
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue for hover effect */
 }

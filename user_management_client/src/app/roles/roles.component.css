@@ -1,26 +1,33 @@
-.container {
+.role-list-container {
   padding: 20px;
 }
 
-h1 {
+h2 {
   text-align: center;
+  font-size: 24px;
   margin-bottom: 20px;
+}
+
+.role-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.role-table th, .role-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.role-table th {
+  background-color: #f2f2f2;
 }
 
 button {
+  margin-left: 10px;
+}
+
+button.mat-raised-button {
   margin-bottom: 20px;
-}
-
-table {
-  width: 100%;
-}
-
-.mat-elevation-z8 {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-  0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-  0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-}
-
-.mat-form-field {
-  width: 100%;
 }

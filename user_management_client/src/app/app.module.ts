@@ -8,7 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import {Role} from "./model/roles.model";
-import {RoleComponent} from "./roles/roles.component";
+import {RolesComponent} from "./roles/roles.component";
 import {RoleDialogComponent} from "./roles/role-dialog.component";
 
 import { AppComponent } from './app.component';
@@ -42,7 +42,7 @@ import {MatSortModule} from "@angular/material/sort"; // Adjust the path as need
     RegistrationComponent,
     UsersComponent,
     MatSortModule,
-    RoleComponent,
+    RolesComponent,
     RoleDialogComponent
 
   ],
