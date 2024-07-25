@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
+import {AddRoleDialogComponent} from "./add-role-dialog/add-role-dialog.component";
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,7 +45,8 @@ import {PermissionsDialogComponent} from "./permissions-dialog/permissions-dialo
     MatSortModule,
     RolesComponent,
     RoleDialogComponent,
-    PermissionsDialogComponent
+    PermissionsDialogComponent,
+    AddRoleDialogComponent
 
   ],
   providers: [AuthService, UserService],

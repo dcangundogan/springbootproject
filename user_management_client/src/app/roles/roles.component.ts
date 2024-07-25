@@ -4,6 +4,8 @@ import { RoleService } from '../services/role.service';
 import { Role } from '../model/roles.model';
 import {PermissionsDialogComponent} from "../permissions-dialog/permissions-dialog.component";
 import {NgForOf} from "@angular/common";
+import {AddRoleDialogComponent} from "../add-role-dialog/add-role-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 declare var $: any; // Declare jQuery
 
@@ -21,7 +23,7 @@ export class RolesComponent implements OnInit {
   roles: Role[] = [];
   selectedPermissions: any[] = []; // To store the permissions of the selected role
 
-  constructor(private roleService: RoleService, private router: Router) {}
+  constructor(private roleService: RoleService, private router: Router,private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadRoles();
@@ -40,15 +42,24 @@ export class RolesComponent implements OnInit {
   }
 
   addRole(): void {
-    const newRole: Role = { id: '', rolename: 'New Role', permissions: [] };
-    this.roleService.createRole(newRole).subscribe(
-      data => {
-        this.loadRoles();
-      },
-      error => {
-        console.error('Error creating role', error);
+    const dialogRef = this.dialog.open(AddRoleDialogComponent, {
+      width: '250px',
+      data: { roleName: '', permissions: [] }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newRole: Role = { id: '', rolename: result.roleName, permissions: result.permissions };
+        this.roleService.createRole(newRole).subscribe(
+          data => {
+            this.loadRoles();
+          },
+          error => {
+            console.error('Error creating role', error);
+          }
+        );
       }
-    );
+    });
   }
 
   deleteRole(id: string): void {

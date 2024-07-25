@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Add New Role</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Role Name</mat-label>
+    <input matInput [(ngModel)]="data.roleName">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Permissions</mat-label>
+    <mat-select multiple [(ngModel)]="data.permissions">
+      <mat-option *ngFor="let permission of permissions" [value]="permission">{{ permission }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onAdd()" cdkFocusInitial>Add</button>
+</div>
