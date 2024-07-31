@@ -20,18 +20,18 @@ public class MessageController {
     public MessageDto sendMessage(@RequestBody MessageDto messageDto) {
         return messageService.sendMessage(messageDto);
     }
-    @GetMapping("/between")
-    public List<MessageDto> getMessagesBetweenUsers(@RequestParam UUID senderId, @RequestParam UUID receiverId) {
+    @GetMapping("/between/{senderId}/{receiverId}")
+    public List<MessageDto> getMessagesBetweenUsers(@PathVariable UUID senderId, @PathVariable UUID receiverId) {
         return messageService.getMessagesBetweenUsers(senderId, receiverId);
     }
 
-    @GetMapping("/sent")
-    public List<MessageDto> getMessagesBySender(@RequestParam UUID senderId) {
+    @GetMapping("/sent/{senderId}")
+    public List<MessageDto> getMessagesBySender(@PathVariable UUID senderId) {
         return messageService.getMessagesBySender(senderId);
     }
 
-    @GetMapping("/received")
-    public List<MessageDto> getMessagesByReceiver(@RequestParam UUID receiverId) {
+    @GetMapping("/received/{receiverId}" )
+    public List<MessageDto> getMessagesByReceiver(@PathVariable UUID receiverId) {
         return messageService.getMessagesByReceiver(receiverId);
     }
 }
