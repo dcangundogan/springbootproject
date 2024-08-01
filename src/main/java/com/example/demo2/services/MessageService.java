@@ -19,9 +19,21 @@ public class MessageService {
     @Autowired
     private MessageMapper messageMapper;
 
+    public List<MessageDto> getInboxMessages(UUID userId) {
+        return messageRepository.findByReceiverId(userId)
+                .stream()
+                .map(message -> {
+                    message.setRead(true);
+                    messageRepository.save(message);
+                    return messageMapper.toDTO(message);
+                })
+                .collect(Collectors.toList());
+    }
+
     public MessageDto sendMessage(MessageDto messageDTO) {
         Message message = messageMapper.toEntity(messageDTO);
         message.setTimestamp(LocalDateTime.now());
+        message.setRead(false);
         Message savedMessage = messageRepository.save(message);
         return messageMapper.toDTO(savedMessage);
     }

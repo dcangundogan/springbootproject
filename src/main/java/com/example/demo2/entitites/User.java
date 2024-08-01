@@ -8,11 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Component
 @Entity
 @Table(name="tbl_usr")
 public class User implements UserDetails {
@@ -21,6 +22,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(nullable = false)
     private UUID id;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

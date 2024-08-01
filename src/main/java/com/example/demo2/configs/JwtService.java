@@ -1,10 +1,12 @@
 package com.example.demo2.configs;
 
+import com.example.demo2.entitites.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,8 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
+
+
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
@@ -37,9 +41,11 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
+        User user = (User)  userDetails;
         Map<String, Object> claims = new HashMap<>();
         claims.put("authorities", userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+    claims.put("id",user.getId());
         return buildToken(claims, userDetails, jwtExpiration);
     }
 

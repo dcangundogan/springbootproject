@@ -1,11 +1,14 @@
 <div>
-  <h2>Messages</h2>
+  <h2>Inbox</h2>
   <div *ngFor="let message of messages">
     <p><strong>{{ message.senderId }}</strong>: {{ message.content }}</p>
   </div>
+
+  <h2>Send Message</h2>
   <div>
+    <input [(ngModel)]="receiverId" placeholder="Enter receiver ID">
+    <input [(ngModel)]="ccId" placeholder="Enter CC ID (optional)">
     <input [(ngModel)]="content" placeholder="Enter message">
     <button (click)="sendMessage()">Send</button>
   </div>
 </div>
-

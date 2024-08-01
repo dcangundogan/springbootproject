@@ -34,4 +34,8 @@ public class MessageController {
     public List<MessageDto> getMessagesByReceiver(@PathVariable UUID receiverId) {
         return messageService.getMessagesByReceiver(receiverId);
     }
+    @GetMapping("/inbox/{userId}")
+    public List<MessageDto> getInboxMessages(@PathVariable UUID userId) {
+        return messageService.getInboxMessages(userId);
+    }
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {jwtDecode} from "jwt-decode";
-import { User } from '../model/user.model'; // Adjust the path as needed
-import { RegisterUserDto } from '../model/register-user.dto'; // Adjust the path as needed
+import {jwtDecode, JwtDecodeOptions} from "jwt-decode";
+import {RegisterUserDto} from "../model/register-user.dto";
+import {User} from "../model/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -27,27 +27,24 @@ export class AuthService {
     });
   }
 
-  fetchUserDetails(): Observable<User | null> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      return of(null);
+  getToken(): string | null {
+    if (!this.token) {
+      this.token = localStorage.getItem('token');
     }
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User>(`${this.userApiUrl}/me`, { headers });
+    return this.token;
   }
 
-  getCurrentUser(): User | null {
-    if (!this.currentUser) {
-      this.currentUser = JSON.parse(localStorage.getItem('user')!);
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.userId || null; // Assuming userId is stored in the token
     }
-    return this.currentUser;
+    return null;
   }
 
   logout(): void {
-    this.currentUser = null;
     this.token = null;
-    localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
@@ -63,19 +60,30 @@ export class AuthService {
   register(registerUserDto: RegisterUserDto): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/signup`, registerUserDto);
   }
+  fetchUserDetails(): Observable<User | null> {
+    const token = this.getToken();
+    if (!token) {
+      return of(null);
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<User>(`${this.userApiUrl}/me`, { headers }).pipe(
+      tap(user => {
+        this.currentUser = user;
+      })
+    );
+  }
 
   hasAuthority(authority: string): boolean {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      return false;
+    const token = this.getToken();
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.authorities && decodedToken.authorities.includes(authority);
     }
-    const decodedToken: any = jwtDecode(token);
-    return decodedToken.authorities && decodedToken.authorities.includes(authority);
+    return false;
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('token');
-    return !!token;
+    return !!this.getToken();
   }
-
 }

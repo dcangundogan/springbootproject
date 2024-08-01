@@ -20,7 +20,16 @@ import { UsersComponent } from './users/users.component'; // Adjust the path as 
 import { AuthService } from './services/auth.service'; // Adjust the path as needed
 import { UserService } from './services/user.service';
 import {MatSortModule} from "@angular/material/sort";
-import {PermissionsDialogComponent} from "./permissions-dialog/permissions-dialog.component";// Adjust the path as needed
+import {PermissionsDialogComponent} from "./permissions-dialog/permissions-dialog.component";
+import {RouterModule} from "@angular/router";
+import {routes} from "./app.routes";
+import {MatCardModule} from "@angular/material/card";
+import {MatInputModule} from "@angular/material/input";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSelectModule} from "@angular/material/select";
+
+// Adjust the path as needed
 
 
 
@@ -46,7 +55,20 @@ import {PermissionsDialogComponent} from "./permissions-dialog/permissions-dialo
     RolesComponent,
     RoleDialogComponent,
     PermissionsDialogComponent,
-    AddRoleDialogComponent
+    AddRoleDialogComponent,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+    MatSelectModule
 
   ],
   providers: [AuthService, UserService],

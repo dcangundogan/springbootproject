@@ -1,35 +1,32 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import {MatSort, MatSortModule, Sort} from '@angular/material/sort';
-import { UserService } from '../services/user.service'; // Adjust the path as needed
+import {MatSort, MatSortHeader, Sort} from '@angular/material/sort';
+import { UserService } from '../services/user.service';
 import { User } from '../model/user.model';
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import {Router} from "@angular/router";
-import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatCell,
-  MatCellDef,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow,
-  MatRowDef,
-} from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MessageService } from '../services/message.service';
+import {MessageDTO} from "../model/message.dto";
+import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
+import {CurrencyPipe, DatePipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
+import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatTable, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatCell, MatCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import {MatButton} from "@angular/material/button"; // Adjust the path as needed
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelDescription, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
   imports: [
-    DatePipe,
+    FormsModule,
     CurrencyPipe,
+    DatePipe,
+    MatButton,
+    MatCard,
+    MatCardContent,
     MatTable,
     MatColumnDef,
     MatHeaderCell,
@@ -42,14 +39,18 @@ import {MatButton} from "@angular/material/button"; // Adjust the path as needed
     MatRow,
     MatPaginator,
     MatSort,
-    FormsModule,
-    MatCardContent,
-    MatCard,
     MatFormField,
     MatInput,
     MatLabel,
-    MatSortModule,
-    MatButton
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
+    MatExpansionPanelHeader,
+    NgIf,
+    NgForOf,
+    MatSortHeader,
+    SlicePipe
   ],
   standalone: true
 })
@@ -58,10 +59,10 @@ export class UsersComponent implements OnInit {
   totalUsers: number = 0;
   pageSize: number = 10;
   currentPage: number = 0;
-  sortBy: string = '';
+  sortBy: string = 'name';
   sortDirection: string = 'asc';
 
-  displayedColumns: string[] = ['name', 'surname', 'email', 'identityNumber', 'birthDate', 'salary'];
+  displayedColumns: string[] = ['name', 'surname', 'email', 'identityNumber', 'birthDate', 'salary', 'actions'];
 
   searchTerms: any = {
     name: '',
@@ -75,7 +76,31 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UserService,private router: Router) {}
+  showMessagePanel: boolean = false;
+  showInbox: boolean = false;
+  receiverId: string = '';
+  ccId: string = '';
+  content: string = '';
+  senderId: string | null = '';
+  inboxMessages: MessageDTO[] = [];
+  hasNewMessages: boolean = false;
+
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private messageService: MessageService,
+    private authService: AuthService
+  ) {
+    this.authService.fetchUserDetails().subscribe(user => {
+      this.senderId = user?.id || null;
+      if (!this.senderId) {
+        alert('User not logged in');
+        this.router.navigate(['/login']);
+      } else {
+        this.loadInboxMessages();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -84,16 +109,29 @@ export class UsersComponent implements OnInit {
   loadUsers(): void {
     this.userService.getUsers(this.currentPage, this.pageSize, this.searchTerms, this.sortBy, this.sortDirection).subscribe(
       data => {
-        console.log('Data received from API:', data); // Logging to check data
         this.users = data.content;
         this.totalUsers = data.totalElements;
-        console.log('Users loaded: ', this.users); // Logging to check data
-        console.log('Total users count: ', this.totalUsers); // Logging to check data
       },
       error => {
         console.error('Error fetching users', error);
       }
     );
+  }
+
+  loadInboxMessages(): void {
+    if (this.senderId) {
+      this.messageService.getInboxMessages(this.senderId).subscribe(messages => {
+        this.inboxMessages = messages;
+        this.hasNewMessages = this.inboxMessages.some(message => !message.isRead);
+      });
+    }
+  }
+
+  markMessageAsRead(message: MessageDTO): void {
+    message.isRead = true;
+    this.messageService.updateMessage(message).subscribe(() => {
+      this.hasNewMessages = this.inboxMessages.some(msg => !msg.isRead);
+    });
   }
 
   onSearchChange(): void {
@@ -112,7 +150,59 @@ export class UsersComponent implements OnInit {
     this.sortDirection = sort.direction;
     this.loadUsers();
   }
+
   navigateToRoles(): void {
     this.router.navigate(['/roles']);
+  }
+
+  openMessagePanel(userId: string): void {
+    this.receiverId = userId;
+    this.showMessagePanel = true;
+  }
+
+  closeMessagePanel(): void {
+    this.showMessagePanel = false;
+  }
+
+  toggleInbox(): void {
+    this.showInbox = !this.showInbox;
+    if (this.showInbox) {
+      this.loadInboxMessages();
+    }
+  }
+
+  sendMessage(): void {
+    if (this.senderId) {
+      const message: MessageDTO = {
+        senderId: this.senderId,
+        receiverId: this.receiverId,
+        ccId: this.ccId,
+        content: this.content,
+        isRead: false
+      };
+      this.messageService.sendMessage(message).subscribe(
+        sentMessage => {
+          this.showMessagePanel = false;
+          this.content = '';
+          alert('Message sent successfully');
+        },
+        error => {
+          console.error('Error sending message:', error);
+          alert('Error sending message');
+        }
+      );
+    } else {
+      alert('Sender ID is not available');
+    }
+  }
+
+  replyMessage(receiverId: string): void {
+    this.receiverId = receiverId;
+    this.content = '';
+    this.showMessagePanel = true;
+  }
+  getUserFullName(userId: string): string {
+    const user = this.users.find(u => u.id === userId);
+    return user ? `${user.name} ${user.surname}` : 'Unknown User';
   }
 }
