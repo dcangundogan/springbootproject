@@ -29,6 +29,12 @@ public class MessageService {
                 })
                 .collect(Collectors.toList());
     }
+    public List<MessageDto> getMessagesByParentId(UUID parentId) {
+        return messageRepository.findByParentId(parentId)
+                .stream()
+                .map(messageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
     public MessageDto sendMessage(MessageDto messageDTO) {
         Message message = messageMapper.toEntity(messageDTO);
@@ -57,5 +63,7 @@ public class MessageService {
                 .map(messageMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+
 
 }

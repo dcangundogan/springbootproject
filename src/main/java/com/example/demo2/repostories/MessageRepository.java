@@ -10,4 +10,5 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
     List<Message> findBySenderId(UUID senderId);
     List<Message> findByReceiverId(UUID receiverId);
     List<Message> findBySenderIdAndReceiverId(UUID senderId, UUID receiverId);
+    List<Message> findByParentId(UUID parentId);
 }

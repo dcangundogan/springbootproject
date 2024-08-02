@@ -22,6 +22,16 @@ public class Message {
     private LocalDateTime timestamp;
     @Column(nullable = false)
     private boolean isRead;
+    @Column
+    private UUID parentId;
+
+    public UUID getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(UUID parentId) {
+        this.parentId = parentId;
+    }
 
     public boolean isRead() {
         return isRead;

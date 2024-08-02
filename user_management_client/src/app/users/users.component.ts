@@ -48,9 +48,9 @@ import { MatAccordion, MatExpansionPanel, MatExpansionPanelDescription, MatExpan
     MatExpansionPanelDescription,
     MatExpansionPanelHeader,
     NgIf,
+    SlicePipe,
     NgForOf,
-    MatSortHeader,
-    SlicePipe
+    MatSortHeader
   ],
   standalone: true
 })
@@ -83,7 +83,9 @@ export class UsersComponent implements OnInit {
   content: string = '';
   senderId: string | null = '';
   inboxMessages: MessageDTO[] = [];
+  threadMessages: { [parentId: string]: MessageDTO[] } = {};
   hasNewMessages: boolean = false;
+  parentId: string | null = null;
 
   constructor(
     private userService: UserService,
@@ -121,8 +123,16 @@ export class UsersComponent implements OnInit {
   loadInboxMessages(): void {
     if (this.senderId) {
       this.messageService.getInboxMessages(this.senderId).subscribe(messages => {
-        this.inboxMessages = messages;
+        this.inboxMessages = messages.filter(msg => !msg.parentId); // Load only root messages
         this.hasNewMessages = this.inboxMessages.some(message => !message.isRead);
+      });
+    }
+  }
+
+  loadThreadMessages(parentId: string): void {
+    if (!this.threadMessages[parentId]) {
+      this.messageService.getMessagesByParentId(parentId).subscribe(messages => {
+        this.threadMessages[parentId] = messages;
       });
     }
   }
@@ -157,6 +167,7 @@ export class UsersComponent implements OnInit {
 
   openMessagePanel(userId: string): void {
     this.receiverId = userId;
+    this.parentId = null; // Reset parentId for a new message
     this.showMessagePanel = true;
   }
 
@@ -178,13 +189,15 @@ export class UsersComponent implements OnInit {
         receiverId: this.receiverId,
         ccId: this.ccId,
         content: this.content,
-        isRead: false
+        isRead: false,
+        parentId: this.parentId // Use parentId set for reply, or null for new message
       };
       this.messageService.sendMessage(message).subscribe(
         sentMessage => {
           this.showMessagePanel = false;
           this.content = '';
           alert('Message sent successfully');
+          this.loadInboxMessages(); // Reload messages to include new message
         },
         error => {
           console.error('Error sending message:', error);
@@ -196,13 +209,25 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  replyMessage(receiverId: string): void {
-    this.receiverId = receiverId;
-    this.content = '';
-    this.showMessagePanel = true;
+  replyMessage(receiverId: string, parentId: string | undefined): void {
+    if (parentId) {
+      this.receiverId = receiverId;
+      this.parentId = parentId; // Set the parentId for the reply
+      this.content = '';
+      this.showMessagePanel = true;
+      this.loadThreadMessages(parentId);
+    } else {
+      console.error('Parent ID is undefined');
+      alert('Error: Parent message not found.');
+    }
   }
+
   getUserFullName(userId: string): string {
     const user = this.users.find(u => u.id === userId);
     return user ? `${user.name} ${user.surname}` : 'Unknown User';
+  }
+
+  isParentIdDefined(messageId: string | undefined): boolean {
+    return messageId !== undefined;
   }
 }

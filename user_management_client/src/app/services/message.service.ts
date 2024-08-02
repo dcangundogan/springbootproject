@@ -27,4 +27,8 @@ export class MessageService {
   updateMessage(message: MessageDTO): Observable<MessageDTO> {
     return this.http.put<MessageDTO>(`${this.apiUrl}/${message.id}`, message, { headers: this.getAuthHeaders() });
   }
+
+  getMessagesByParentId(parentId: string): Observable<MessageDTO[]> {
+    return this.http.get<MessageDTO[]>(`${this.apiUrl}/thread/${parentId}`, { headers: this.getAuthHeaders() });
+  }
 }

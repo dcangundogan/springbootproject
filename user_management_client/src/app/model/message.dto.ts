@@ -6,4 +6,5 @@ export interface MessageDTO {
   content: string;
   timestamp?: string;
   isRead: boolean;
+  parentId?:string|null;
 }

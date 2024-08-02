@@ -1,11 +1,15 @@
 <div class="container">
   <h1>User Management</h1>
-  <button mat-raised-button color="primary" (click)="navigateToRoles()">Manage Roles</button>
-  <button mat-raised-button color="primary" (click)="toggleInbox()">Inbox <span *ngIf="hasNewMessages" class="notification-dot"></span></button>
+  <div class="header-buttons">
+    <button mat-raised-button color="primary" (click)="navigateToRoles()">Manage Roles</button>
+    <button mat-raised-button color="primary" (click)="toggleInbox()">
+      Inbox <span *ngIf="hasNewMessages" class="notification-dot"></span>
+    </button>
+  </div>
+
   <mat-card class="mat-elevation-z8">
     <mat-card-content>
       <table mat-table [dataSource]="users" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z8" multiTemplateDataRows>
-
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <mat-form-field appearance="outline" class="filter-input">
@@ -106,7 +110,7 @@
 
   <!-- Inbox -->
   <mat-accordion *ngIf="showInbox">
-    <mat-expansion-panel *ngFor="let message of inboxMessages" (opened)="markMessageAsRead(message)">
+    <mat-expansion-panel *ngFor="let message of inboxMessages" (opened)="markMessageAsRead(message); loadThreadMessages(message.id!)">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ getUserFullName(message.senderId) }}: {{ message.content | slice:0:30 }}...
@@ -116,7 +120,21 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p>{{ message.content }}</p>
-      <button mat-button (click)="replyMessage(message.senderId)">Reply</button>
+      <button mat-button (click)="replyMessage(message.senderId, message.id!)">Reply</button>
+      <mat-accordion *ngIf="isParentIdDefined(message.id)">
+        <mat-expansion-panel *ngFor="let reply of threadMessages[message.id!]">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ getUserFullName(reply.senderId) }}: {{ reply.content | slice:0:30 }}...
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ reply.timestamp | date:'short' }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <p>{{ reply.content }}</p>
+          <button mat-button *ngIf="reply.id" (click)="replyMessage(reply.senderId, reply.id)">Reply</button>
+        </mat-expansion-panel>
+      </mat-accordion>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

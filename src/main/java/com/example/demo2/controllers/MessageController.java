@@ -38,4 +38,9 @@ public class MessageController {
     public List<MessageDto> getInboxMessages(@PathVariable UUID userId) {
         return messageService.getInboxMessages(userId);
     }
+    @GetMapping("/thread/{parentId}")
+    public List<MessageDto> getMessagesByParentId(@PathVariable UUID parentId) {
+        return messageService.getMessagesByParentId(parentId);
+    }
+
 }
